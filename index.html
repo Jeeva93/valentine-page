@@ -3,46 +3,192 @@
 <head>
   <meta charset="UTF-8">
   <title>Valentine</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
   <style>
+    :root{
+      --bg-1:#fff0f6;
+      --bg-2:#ffe6f2;
+      --accent:#ff4d84;
+      --accent-dark:#c01f4b;
+      --muted:#7a4b5c;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
     body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 20%;
+      font-family: 'Poppins', Arial, sans-serif;
+      color:var(--muted);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: radial-gradient(1200px 600px at 10% 10%, #fff5fb 0%, transparent 20%), linear-gradient(135deg,var(--bg-1) 0%, var(--bg-2) 100%);
+      overflow:hidden;
+      padding:2rem;
     }
-    h1 {
-      font-size: 2em;
+    .card{
+      position:relative;
+      width:100%;
+      max-width:880px;
+      background:rgba(255,255,255,0.7);
+      border-radius:20px;
+      padding:3rem 2.5rem;
+      box-shadow:0 10px 30px rgba(200,110,140,0.12);
+      text-align:center;
+      backdrop-filter: blur(6px) saturate(120%);
     }
-    button {
-      padding: 10px 20px;
-      font-size: 1.2em;
-      margin: 10px;
-      cursor: pointer;
+    h1{
+      font-family:'Great Vibes', cursive;
+      margin:0 0 0.5rem 0;
+      font-size:3.2rem;
+      color:var(--accent-dark);
+      text-shadow:0 2px 0 rgba(255,255,255,0.6);
     }
-    #noBtn {
-      position: absolute;
+    p.lead{margin:0 0 1.5rem 0;font-size:1.05rem;color:#8b5567}
+    .controls{display:flex;gap:1rem;justify-content:center;align-items:center;flex-wrap:wrap;position:relative}
+    button{
+      border:0;
+      border-radius:999px;
+      padding:12px 26px;
+      font-size:1rem;
+      cursor:pointer;
+      transition:transform .18s ease, box-shadow .18s ease;
+      box-shadow:0 6px 18px rgba(200,60,100,0.12);
+    }
+    button:active{transform:translateY(2px)}
+    .yes{
+      background:linear-gradient(90deg,var(--accent) 0%, #ff7aa0 100%);
+      color:white;
+      font-weight:600;
+    }
+    .no{
+      background:transparent;
+      color:var(--accent-dark);
+      padding:10px 18px;
+      border:2px solid rgba(255,77,132,0.18);
+      min-width:84px;
+      transition:left 0.18s, top 0.18s, transform 0.18s;
+      position:static;
+      z-index:10;
+      margin-left:0;
+    }
+    .no.moving{
+      position:fixed !important;
+      margin:0 !important;
+      left:50vw;
+      top:62vh;
+      transform:translate(-50%,0);
+    }
+    .no:hover{transform:translateY(-4px) rotate(-3deg)}
+    /* floating heart animation layer */
+    .hearts{pointer-events:none;position:fixed;inset:0;overflow:hidden}
+    .heart{
+      position:absolute;
+      width:18px;height:18px;
+      transform:translate(-50%,-50%) scale(0.9);
+      background:linear-gradient(135deg,#ff6aa6,#ff3b7a);
+      border-radius:6px 6px 0 0;
+      opacity:0.95;
+      animation:floatUp linear forwards;
+    }
+    @keyframes floatUp{
+      0%{transform:translate(-50%,0) scale(0.8);opacity:0}
+      10%{opacity:1}
+      100%{transform:translate(-50%,-140vh) scale(1.4);opacity:0}
+    }
+    @media (max-width:600px){
+      .card{padding:2rem 1.25rem}
+      h1{font-size:2.2rem}
+      .no{top:70%}
     }
   </style>
 </head>
 <body>
-  <h1>Will you be my Valentine?</h1>
-  <button onclick="alert('Yay! ❤️')">YES</button>
-  <button id="noBtn">NO</button>
+  <div class="card">
+    <h1>Will you be my Valentine?</h1>
+    <p class="lead">A little something sweet — pick an answer ❤️</p>
+    <div class="controls">
+      <button class="yes" id="yesBtn">YES</button>
+      <button id="noBtn" class="no">NO</button>
+    </div>
+  </div>
+
+  <div class="hearts" id="hearts"></div>
 
   <script>
     const noBtn = document.getElementById("noBtn");
-    noBtn.style.left = "50%";
-    noBtn.style.top = "60%";
+    const yesBtn = document.getElementById("yesBtn");
+    const heartsLayer = document.getElementById('hearts');
 
-    function moveButton() {
-      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+    // Move NO button only after first hover/touch
+    // Store original position for reset
+    let originalNoBtnParent = noBtn.parentElement;
+    let originalNoBtnNext = noBtn.nextSibling;
+
+    function moveButton(){
+      noBtn.classList.add('moving');
+      // Move to body for fixed positioning
+      document.body.appendChild(noBtn);
+      const padding = 20;
+      const btnW = noBtn.offsetWidth;
+      const btnH = noBtn.offsetHeight;
+      const maxX = window.innerWidth - btnW - padding;
+      const maxY = window.innerHeight - btnH - padding;
+      // Ensure button stays fully visible
+      const x = Math.max(padding, Math.min(maxX, padding + Math.random() * (maxX - padding)));
+      const y = Math.max(padding, Math.min(maxY, padding + Math.random() * (maxY - padding)));
       noBtn.style.left = x + "px";
       noBtn.style.top = y + "px";
     }
 
-    // On mobile, use touchstart instead of hover
-    noBtn.addEventListener("mouseenter", moveButton); // desktop hover
-    noBtn.addEventListener("touchstart", moveButton); // mobile touch
+    function resetNoBtn(){
+      noBtn.classList.remove('moving');
+      noBtn.style.left = '';
+      noBtn.style.top = '';
+      // Move back to original parent/position
+      if(originalNoBtnNext && originalNoBtnNext.parentNode === originalNoBtnParent){
+        originalNoBtnParent.insertBefore(noBtn, originalNoBtnNext);
+      } else {
+        originalNoBtnParent.appendChild(noBtn);
+      }
+    }
+
+    noBtn.addEventListener("mouseenter", moveButton);
+    noBtn.addEventListener("touchstart", function(e){ e.preventDefault(); moveButton(); });
+
+    // Heart spawning
+    function createHeart(xPercent){
+      const h = document.createElement('div');
+      h.className = 'heart';
+      const size = 10 + Math.random() * 26;
+      h.style.width = size + 'px';
+      h.style.height = size + 'px';
+      const left = (xPercent!==undefined) ? (xPercent * window.innerWidth) : (Math.random()*100) + 'vw';
+      h.style.left = left + (typeof left === 'string' ? '' : 'px');
+      h.style.bottom = '-20px';
+      h.style.animationDuration = (6 + Math.random()*5) + 's';
+      h.style.opacity = 0.95 - Math.random()*0.4;
+      heartsLayer.appendChild(h);
+      // remove after animation
+      setTimeout(()=> h.remove(), 11000);
+    }
+
+    // spawn gentle background hearts
+    setInterval(()=>{
+      createHeart();
+    }, 700);
+
+    // yes button celebration
+    yesBtn.addEventListener('click', ()=>{
+      // burst hearts from center
+      for(let i=0;i<14;i++){
+        setTimeout(()=> createHeart(0.45 + (Math.random()*0.2)), i*40);
+      }
+      alert('Yay! ❤️');
+    });
+
+    // adjust NO position on resize
+    window.addEventListener('resize', ()=>{
+      resetNoBtn();
+    });
   </script>
 </body>
 </html>
