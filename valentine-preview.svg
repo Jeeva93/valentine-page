@@ -12,7 +12,7 @@
     <ellipse cx="480" cy="260" rx="120" ry="110" fill="#ff4d84" opacity="0.9"/>
   </g>
   <text x="50%" y="55%" text-anchor="middle" fill="#fff" font-family="'Great Vibes', cursive, Arial" font-size="70" font-weight="bold" dy=".3em" style="text-shadow:0 4px 16px #c01f4b;">Surprise !!!!</text>
-  <text x="50%" y="65%" text-anchor="middle" fill="#fff" font-family="'Great Vibes', cursive, Arial" font-size="90" font-weight="bold" dy=".3em" style="text-shadow:0 4px 16px #c01f4b;"><<<--- Click Me --->>></text>
+  <text x="50%" y="65%" text-anchor="middle" fill="#fff" font-family="'Great Vibes', cursive, Arial" font-size="90" font-weight="bold" dy=".3em" style="text-shadow:0 4px 16px #c01f4b;">--- Click Me ---</text>
   <g>
     <circle cx="250" cy="120" r="12" fill="#fff" opacity="0.5"/>
     <circle cx="1050" cy="180" r="8" fill="#fff" opacity="0.4"/>
