@@ -197,6 +197,8 @@
       // Modal close handler
       document.getElementById('closeLoveModal').onclick = function() {
         document.getElementById('loveModal').style.display = 'none';
+        // Reset NO button to original position
+        resetNoBtn();
       };
 
     // adjust NO position on resize
