@@ -50,7 +50,8 @@
       // Show it as a friendly hyperlink with copy + preview options
       document.getElementById("output").innerHTML = `
         Here’s your link:<br>
-        <a href="${link}" target="_blank">Click here for your Valentine Surprise ❤️</a><br><br>
+        <span style="color:#ff4d84;cursor:pointer;font-weight:bold;text-decoration:underline;" onclick="window.open('${link}','_blank')"> Click here for your Valentine Surprise ❤️ </span>
+        <br><br>
         <button onclick="window.open('${link}', '_blank')">Preview Link</button>
       `;
     }
