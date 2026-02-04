@@ -78,7 +78,6 @@
       transform:translate(-50%,0);
     }
     .no:hover{transform:translateY(-4px) rotate(-3deg)}
-    /* floating heart animation layer */
     .hearts{pointer-events:none;position:fixed;inset:0;overflow:hidden}
     .heart{
       position:absolute;
@@ -112,35 +111,34 @@
   </div>
 
   <div class="hearts" id="hearts"></div>
-      <!-- Custom Love Modal -->
-      <div id="loveModal" style="display:none;position:fixed;z-index:1000;inset:0;align-items:center;justify-content:center;background:rgba(255,77,132,0.13);backdrop-filter:blur(2px);">
-        <div style="background:rgba(255,255,255,0.98);border-radius:2rem;box-shadow:0 8px 32px rgba(200,60,100,0.18);padding:2.5rem 2rem 2rem 2rem;max-width:90vw;min-width:260px;text-align:center;position:relative;">
-          <div style="font-size:3rem;color:#ff4d84;font-family:'Great Vibes',cursive;line-height:1.1;">I Love You, my Wifeyyyyy...</div>
-          <div style="font-size:1.2rem;color:#c01f4b;margin:1rem 0 1.5rem 0;">With All My Heart ❤️</div>
-          <button id="closeLoveModal" style="background:linear-gradient(90deg,#ff4d84,#ff7aa0);color:white;font-weight:600;border:0;border-radius:999px;padding:10px 32px;font-size:1.1rem;box-shadow:0 4px 16px rgba(200,60,100,0.10);cursor:pointer;">Aww, thank you!</button>
-        </div>
+
+  <!-- Custom Love Modal -->
+  <div id="loveModal" style="display:none;position:fixed;z-index:1000;inset:0;align-items:center;justify-content:center;background:rgba(255,77,132,0.13);backdrop-filter:blur(2px);">
+    <div style="background:rgba(255,255,255,0.98);border-radius:2rem;box-shadow:0 8px 32px rgba(200,60,100,0.18);padding:2.5rem 2rem 2rem 2rem;max-width:90vw;min-width:260px;text-align:center;position:relative;">
+      <div id="loveText" style="font-size:3rem;color:#ff4d84;font-family:'Great Vibes',cursive;line-height:1.1;">
+        I Love You, my ...
       </div>
+      <div style="font-size:1.2rem;color:#c01f4b;margin:1rem 0 1.5rem 0;">With All My Heart ❤️</div>
+      <button id="closeLoveModal" style="background:linear-gradient(90deg,#ff4d84,#ff7aa0);color:white;font-weight:600;border:0;border-radius:999px;padding:10px 32px;font-size:1.1rem;box-shadow:0 4px 16px rgba(200,60,100,0.10);cursor:pointer;">Aww, thank you!</button>
+    </div>
+  </div>
 
   <script>
     const noBtn = document.getElementById("noBtn");
     const yesBtn = document.getElementById("yesBtn");
     const heartsLayer = document.getElementById('hearts');
 
-    // Move NO button only after first hover/touch
-    // Store original position for reset
     let originalNoBtnParent = noBtn.parentElement;
     let originalNoBtnNext = noBtn.nextSibling;
 
     function moveButton(){
       noBtn.classList.add('moving');
-      // Move to body for fixed positioning
       document.body.appendChild(noBtn);
       const padding = 20;
       const btnW = noBtn.offsetWidth;
       const btnH = noBtn.offsetHeight;
       const maxX = window.innerWidth - btnW - padding;
       const maxY = window.innerHeight - btnH - padding;
-      // Ensure button stays fully visible
       const x = Math.max(padding, Math.min(maxX, padding + Math.random() * (maxX - padding)));
       const y = Math.max(padding, Math.min(maxY, padding + Math.random() * (maxY - padding)));
       noBtn.style.left = x + "px";
@@ -151,7 +149,6 @@
       noBtn.classList.remove('moving');
       noBtn.style.left = '';
       noBtn.style.top = '';
-      // Move back to original parent/position
       if(originalNoBtnNext && originalNoBtnNext.parentNode === originalNoBtnParent){
         originalNoBtnParent.insertBefore(noBtn, originalNoBtnNext);
       } else {
@@ -162,7 +159,6 @@
     noBtn.addEventListener("mouseenter", moveButton);
     noBtn.addEventListener("touchstart", function(e){ e.preventDefault(); moveButton(); });
 
-    // Heart spawning
     function createHeart(xPercent){
       const h = document.createElement('div');
       h.className = 'heart';
@@ -175,35 +171,39 @@
       h.style.animationDuration = (6 + Math.random()*5) + 's';
       h.style.opacity = 0.95 - Math.random()*0.4;
       heartsLayer.appendChild(h);
-      // remove after animation
       setTimeout(()=> h.remove(), 11000);
     }
 
-    // spawn gentle background hearts
-    setInterval(()=>{
-      createHeart();
-    }, 700);
+    setInterval(()=>{ createHeart(); }, 700);
 
-    // yes button celebration
-    yesBtn.addEventListener('click', ()=>{
+    // YES button celebration
+        yesBtn.addEventListener('click', ()=>{
       // burst hearts from center
       for(let i=0;i<14;i++){
         setTimeout(()=> createHeart(0.45 + (Math.random()*0.2)), i*40);
       }
-        // Show custom modal
-        document.getElementById('loveModal').style.display = 'flex';
+      // Show custom modal
+      document.getElementById('loveModal').style.display = 'flex';
     });
 
-      // Modal close handler
-      document.getElementById('closeLoveModal').onclick = function() {
-        document.getElementById('loveModal').style.display = 'none';
-        // Reset NO button to original position
-        resetNoBtn();
-      };
+    // Modal close handler
+    document.getElementById('closeLoveModal').onclick = function() {
+      document.getElementById('loveModal').style.display = 'none';
+      // Reset NO button to original position
+      resetNoBtn();
+    };
 
     // adjust NO position on resize
     window.addEventListener('resize', ()=>{
       resetNoBtn();
+    });
+
+    // 🔑 Dynamic name injection
+    const urlParams = new URLSearchParams(window.location.search);
+    const lovedOne = urlParams.get("name") || "Love";
+    document.addEventListener("DOMContentLoaded", () => {
+      const loveText = document.getElementById("loveText");
+      loveText.textContent = `I Love You, my ${lovedOne}...`;
     });
   </script>
 </body>
