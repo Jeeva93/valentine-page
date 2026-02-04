@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Your Valentine Link</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align:center; padding:2rem; }
+    input, button { padding:0.6rem 1rem; margin:0.5rem; border-radius:8px; border:1px solid #ccc; }
+    button { background:#ff4d84; color:white; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <h2>Generate Your Valentine Surprise Link</h2>
+  <p>Type your loved one’s name below:</p>
+  <input id="nameInput" type="text" placeholder="Enter name">
+  <button onclick="generateLink()">Generate Link</button>
+  <p id="output"></p>
+
+  <script>
+    function generateLink() {
+      const name = document.getElementById("nameInput").value.trim();
+      if(!name) {
+        alert("Please enter a name!");
+        return;
+      }
+      const link = `https://jeeva93.github.io/valentine-page/imageRef.html?name=${encodeURIComponent(name)}`;
+      document.getElementById("output").innerHTML = 
+        `Here’s your link: <a href="${link}" target="_blank">${link}</a>`;
+    }
+  </script>
+</body>
+</html>
