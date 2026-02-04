@@ -34,8 +34,19 @@
   </style>
 </head>
 <body>
-  <a class="preview-link" href="https://jeeva93.github.io/valentine-page/" target="_blank">
-    <img src="valentine-preview.svg" alt="Click Me ">
+  <!-- Link will be updated dynamically -->
+  <a class="preview-link" id="previewLink" target="_blank">
+    <img src="valentine-preview.svg" alt="Click Me">
   </a>
+
+  <script>
+    // Read ?name= from current URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const lovedOne = urlParams.get("name");
+
+    // Forward the same name to index.html
+    const previewLink = document.getElementById("previewLink");
+    previewLink.href = "index.html?name=" + encodeURIComponent(lovedOne || "");
+  </script>
 </body>
 </html>
