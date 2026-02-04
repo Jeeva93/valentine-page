@@ -17,16 +17,19 @@
   <p id="output"></p>
 
   <script>
-    function generateLink() {
-      const name = document.getElementById("nameInput").value.trim();
-      if(!name) {
-        alert("Please enter a name!");
-        return;
-      }
-      const link = `https://jeeva93.github.io/valentine-page/imageRef.html?name=${encodeURIComponent(name)}`;
-      document.getElementById("output").innerHTML = 
-        `Here’s your link: <a href="${link}" target="_blank">${link}</a>`;
+  function generateLink() {
+    const name = document.getElementById("nameInput").value.trim();
+    if(!name) {
+      alert("Please enter a name!");
+      return;
     }
-  </script>
+    // Build the personalized link dynamically
+    const link = `https://jeeva93.github.io/valentine-page/imageRef.html?name=${encodeURIComponent(name)}`;
+
+    // Show it as a friendly hyperlink
+    document.getElementById("output").innerHTML = 
+      `Here’s your link: <a href="${link}" target="_blank">Click here for your Valentine surprise ❤️</a>`;
+  }
+</script>
 </body>
 </html>
