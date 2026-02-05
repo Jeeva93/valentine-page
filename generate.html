@@ -38,23 +38,29 @@
   <div id="output"></div>
 
   <script>
-    function generateLink() {
-      const name = document.getElementById("nameInput").value.trim();
-      if(!name) {
-        alert("Please enter a name!");
-        return;
-      }
-      // Build the personalized link dynamically
-      const link = `https://jeeva93.github.io/valentine-page/imageRef.html?name=${encodeURIComponent(name)}`;
-
-      // Show it as a friendly hyperlink with copy + preview options
-      document.getElementById("output").innerHTML = `
-        Here’s your link:<br>
-        <span style="color:#ff4d84;cursor:pointer;font-weight:bold;text-decoration:underline;" onclick="window.open('${link}','_blank')"> Click here for your Valentine Surprise ❤️ </span>
-        <br><br>
-        <button onclick="window.open('${link}', '_blank')">Preview Link</button>
-      `;
+  function generateLink() {
+    const name = document.getElementById("nameInput").value.trim();
+    if(!name) {
+      alert("Please enter a name!");
+      return;
     }
-  </script>
+
+    // Build the personalized link
+    const link = `https://jeeva93.github.io/valentine-page/imageRef.html?name=${encodeURIComponent(name)}`;
+
+    // Show neat hyperlink
+    document.getElementById("output").innerHTML = `
+      Here’s your link:<br>
+      <a href="${link}" target="_blank">Click here for your Valentine Surprise ❤️</a>
+    `;
+
+    // Log to Google Sheet
+    fetch("https://script.google.com/macros/s/AKfycbxPJN4RrSjASYrav-u164P27lnglsJCrMVlH9OfTarUo7lh5OPeckx4f8Ycb4MRaaHq/exec", {
+      method: "POST",
+      body: JSON.stringify({ user: "client123", name })
+    });
+  }
+</script>
+
 </body>
 </html>
