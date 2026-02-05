@@ -59,6 +59,18 @@
       method: "POST",
       body: JSON.stringify({ user: "client123", name })
     });
+    // Log to Google Sheet
+fetch("https://script.google.com/macros/s/AKfycbxPJN4RrSjASYrav-u164P27lnglsJCrMVlH9OfTarUo7lh5OPeckx4f8Ycb4MRaaHq/exec", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({ User: "client123", Name })
+})
+.then(response => response.text())
+.then(data => console.log("Logged:", data))
+.catch(error => console.error("Error:", error));
+
   }
 </script>
 
